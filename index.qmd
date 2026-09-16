@@ -2,6 +2,8 @@
 title: "Agentic AI tutoring"
 subtitle: "Instant feedback, robust evals with blendtutor"
 author: "Michael Mullarkey"
+resources:
+  - media/*.mp4
 format:
   revealjs:
     theme: [default, custom.scss]
