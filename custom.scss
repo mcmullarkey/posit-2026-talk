@@ -1,0 +1,195 @@
+/*-- scss:defaults --*/
+
+// Fonts — weights/styles must be requested in the URL or bold/italic won't render
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
+
+$presentation-heading-font: "Sora", sans-serif !default;
+$font-family-sans-serif:    "Inter", sans-serif !default;
+$font-family-monospace:     "JetBrains Mono", monospace !default;
+
+// Colors — Data Dash brand (buttondown.com/datadash), dark mode, all-green
+// identity: brand green #006400 fails on dark (2.3:1), so everything uses
+// lightened greens — #7ec87e (8.6:1) as the base, #4ade80 (10:1) as a brighter
+// variation for inline emphasis.
+$body-bg:                    #1a1a1e !default; // brand dark background
+$body-color:                 #fafafa !default; // brand near-white
+$presentation-heading-color: #7ec87e !default; // brand green, lightened for dark bg
+$link-color:                 #7ec87e !default; // also menu + progress bar
+$code-color:                 #7ec87e !default; // matches headings
+$accent-emphasis:            #4ade80 !default; // brighter green for [.accent] spans
+
+// Light variant (logo colors: green on near-white), swap in for bright rooms:
+//   $body-bg: #fafafa; $body-color: #1a1a1e;
+//   $presentation-heading-color: #006400; $code-color: #006400;
+//   $link-color: #0b57d0; // brand blue darkened — #4a9eff fails on light (2.6:1)
+//   $accent-emphasis: #006400; // bright greens fail on light bg
+
+// Sizes — most decks run too small, so size up
+$presentation-font-size-root: 40px !default;
+$presentation-h1-font-size:   72px !default;
+$presentation-h2-font-size:   56px !default;
+$code-block-font-size:        0.85em !default;
+
+$presentation-heading-font-weight: 700 !default;
+
+/*-- scss:rules --*/
+
+// Rules targeting slide content need the .reveal .slides section prefix
+// to beat built-in theme specificity.
+
+.reveal .slides section h1,
+.reveal .slides section h2 {
+  letter-spacing: -0.02em;
+}
+
+// Inline emphasis utility: [like this]{.accent}
+.reveal .slides section .accent {
+  color: $accent-emphasis;
+  font-weight: 600;
+}
+
+// Muted asides: [smaller, quieter]{.muted}
+.reveal .slides section .muted {
+  color: rgba($body-color, 0.65); // ~5:1 either mode — keeps small text readable
+  font-size: 0.8em;
+}
+
+// Blockquotes as pull-quotes
+.reveal .slides section blockquote {
+  border-left: 4px solid $presentation-heading-color;
+  padding-left: 0.6em;
+  font-style: italic;
+  color: rgba($body-color, 0.85);
+}
+
+// Code blocks: slight lift off the background
+.reveal .slides section pre code {
+  border-radius: 8px;
+  background-color: if(lightness($body-bg) > 50%, darken($body-bg, 3.5%), lighten($body-bg, 4%));
+}
+
+// Centered-body slides (.typewriter, .v-center): flex column; .v-center keeps title top and
+// centers in the remaining space via flex + margin auto.
+.reveal .slides section.typewriter,
+.reveal .slides section.v-center {
+  height: 100%;
+  display: flex !important; // reveal sets inline display:block on visible slides
+  flex-direction: column;
+}
+
+// Typewriter: title + code center together as one group — auto margins
+// before the title and after the code (Quarto's .code-copy-outer-scaffold).
+.reveal .slides section.typewriter h1,
+.reveal .slides section.typewriter h2 {
+  margin-top: auto;
+}
+
+.reveal .slides section.typewriter .code-copy-outer-scaffold {
+  margin-bottom: auto; // vertical centering in the flex column
+}
+
+.reveal .slides section.typewriter div.sourceCode {
+  margin-left: auto;
+  margin-right: auto; // horizontal centering
+  width: 16em;  // fits "> library(\"swirl\")" with room; fixed across steps
+  min-height: 3.4em; // two code lines, so line 2 doesn't grow the box
+}
+
+// Stacked code blocks that reveal as fragments but read as ONE box —
+// container carries the box, inner blocks go transparent and flush.
+// .swirl-console: swirl walkthrough (question / answer / response).
+// .code-steps: command lists revealed line by line.
+.reveal .slides section .swirl-console,
+.reveal .slides section .code-steps {
+  background-color: if(lightness($body-bg) > 50%, darken($body-bg, 3.5%), lighten($body-bg, 4%));
+  border: 1px solid rgba($body-color, 0.2);
+  border-radius: 8px;
+  padding: 0.5em 0.2em;
+}
+
+// On a .v-center slide the console centers both axes and shrinks to content
+.reveal .slides section.v-center .swirl-console {
+  margin: auto;
+  width: fit-content;
+}
+
+.reveal .slides section .swirl-console div.sourceCode,
+.reveal .slides section .code-steps div.sourceCode {
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+.reveal .slides section .swirl-console pre,
+.reveal .slides section .code-steps pre {
+  margin: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.reveal .slides section .swirl-console pre {
+  font-size: 0.5em; // long console lines fit the slide
+}
+
+.reveal .slides section .swirl-console pre code,
+.reveal .slides section .code-steps pre code {
+  background-color: transparent; // container owns the background
+  padding: 0.1em 1.2em;
+}
+
+// Tagline under a .code-steps box
+.reveal .slides section .code-steps + .fragment {
+  margin-top: 0.6em;
+}
+
+// CTA slide: two QR panels, centered, with breathing room
+.reveal .slides section .cta {
+  align-items: center;
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.reveal .slides section .cta h3 {
+  color: $presentation-heading-color;
+  font-size: 0.8em;
+  margin-bottom: 0.4em;
+}
+
+// QR codes: light-background PNGs (scan reliably in any room), so give them
+// a white plate + rounded corners rather than letting them float on the dark bg
+.reveal .slides section img.qr {
+  width: 300px;
+  max-width: 60%;
+  height: auto;
+  background: #fafafa;
+  padding: 0.35em;
+  border-radius: 10px;
+  margin: 0 auto 0.4em;
+  display: block;
+  border: none;
+  box-shadow: none;
+}
+
+// Image slides: frosted label box centered on both axes over a background
+// image. Heading green as the plate, dark text on top (8.6:1 contrast).
+.reveal .slides section .image-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8em;
+  padding: 0.5em 1em;
+  color: $body-bg;
+  background-color: rgba($presentation-heading-color, 0.75);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+// Command slides: a little more air between stacked code blocks
+.reveal .slides section.v-center div.sourceCode + div.sourceCode,
+.reveal .slides section.v-center div.sourceCode + pre {
+  margin-top: 0.6em;
+}

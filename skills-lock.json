@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "auto-animate-elements": {
+      "source": "emilhvitfeldt/slidecrafting.com",
+      "sourceType": "github",
+      "skillPath": "skills/auto-animate-elements/SKILL.md",
+      "computedHash": "3b71c76ec4c29ae998d56e1584588d759cd675484feb2faebc23318c7c3902f0"
+    },
+    "quarto-revealjs": {
+      "source": "emilhvitfeldt/slidecrafting.com",
+      "sourceType": "github",
+      "skillPath": "skills/quarto-revealjs/SKILL.md",
+      "computedHash": "8c8366792d84ca4c1c18466a08bc5182def63d8e3e9cd646b797e6a4c8de93fa"
+    },
+    "quarto-revealjs-fragment": {
+      "source": "emilhvitfeldt/slidecrafting.com",
+      "sourceType": "github",
+      "skillPath": "skills/quarto-revealjs-fragment/SKILL.md",
+      "computedHash": "d2b49992b344dafa26afe1d3c892d7847d9a61990430cb1b5b3e90f53fd18a74"
+    }
+  }
+}
